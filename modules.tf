@@ -32,10 +32,7 @@ module "ecs" {
     module.vpc.ecs_sg_id,
   ]
 
-  availability_zones = [
-    module.vpc.public_subnet_1a,
-    module.vpc.public_subnet_1b,
-  ]
+  availability_zones = flatten([ module.vpc.public_subnet_1a, module.vpc.public_subnet_1b])
 }
 
 module "pipeline" {
@@ -52,9 +49,6 @@ module "pipeline" {
   vpc_id                = module.vpc.vpc_id
   region                = var.aws_region
 
-  subnet_ids = [
-    module.vpc.public_subnet_1a,
-    module.vpc.public_subnet_1b,
-  ]
+  subnet_ids = flatten([module.vpc.public_subnet_1a, module.vpc.public_subnet_1b])
 }
 

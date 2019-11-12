@@ -31,7 +31,7 @@ variable "repository_url" {
 }
 
 variable "subnet_ids" {
-  type        = "list"
+  type        = list(string)
   description = "Subnet ids"
 }
 
@@ -46,3 +46,4 @@ variable "container_name" {
 variable "account_id" {
   description = "AWS Account ID"
 }
+

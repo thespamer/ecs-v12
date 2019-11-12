@@ -1,14 +1,13 @@
 data "template_file" "buildspec" {
-  template = "${file("${path.module}/templates/buildspec.yml")}"
+  template = file("${path.module}/templates/buildspec.yml")
 
-  vars {
-    repository_url = "${var.repository_url}"
-    region         = "${var.region}"
-    cluster_name   = "${var.cluster_name}"
-    container_name = "${var.container_name}"
-
+  vars = {
+    repository_url = var.repository_url
+    region         = var.region
+    cluster_name   = var.cluster_name
+    container_name = var.container_name
     # subnet_id          = "${var.run_task_subnet_id}"
-    security_group_ids = "${join(",",var.subnet_ids)}"
+    security_group_ids = join(",", var.subnet_ids)
   }
 }
 
@@ -16,7 +15,7 @@ resource "aws_codebuild_project" "app_build" {
   name          = "${var.cluster_name}-codebuild"
   build_timeout = "60"
 
-  service_role = "${aws_iam_role.codebuild_role.arn}"
+  service_role = aws_iam_role.codebuild_role.arn
 
   artifacts {
     type = "CODEPIPELINE"
@@ -33,6 +32,7 @@ resource "aws_codebuild_project" "app_build" {
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = "${data.template_file.buildspec.rendered}"
+    buildspec = data.template_file.buildspec.rendered
   }
 }
+
