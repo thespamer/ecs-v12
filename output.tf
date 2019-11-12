@@ -1,3 +1,4 @@
 output "alb-endpoint" {
-  value = "${module.ecs.alb}"
+  value = module.ecs.alb
 }
+
